@@ -1,0 +1,160 @@
+用户接口：
+
+注册：
+	接口：/api/user/register
+	请求方式：POST
+	请求参数：
+		username - 用户名
+		password - 密码
+		email - 邮箱
+	返回JSON：
+		{
+			"res_code" : 1, // 1表示注册成功，否则失败
+			"res_error" : "", // 失败时的错误信息
+			"res_body" : { // 响应主体
+				"data" : {
+					"username": "xxx", // 用户名
+					"email": "xxx", // email
+					"level": "", // 等级
+					"reg_time": "" // 注册时间
+				}
+			}
+		}
+
+登录：
+	接口：/api/user/login
+	请求方式：POST
+	请求参数：
+		username
+		password
+	返回JSON：
+		{
+			"res_code" : 1, // 1表示登录成功，否则失败
+			"res_error" : "", // 失败时的错误信息
+			"res_body" : { // 响应主体
+				"data" : {
+					"username": "xxx", // 用户名
+					"email": "xxx", // email
+					"level": "", // 等级
+					"reg_time": "" // 注册时间
+				}
+			}
+		}
+
+注销：
+	接口：/api/user/logout
+	请求方式：GET
+	请求参数：
+	返回JSON：
+		{
+			"res_code" : 1, // 1表示注销成功，否则失败
+			"res_error" : "", // 失败时的错误信息
+			"res_body" : { // 响应主体
+				"status" : true // 注销成功还是失败   true成功
+			}
+		}
+
+
+==========================================================
+
+职位管理
+
+添加职位：
+	接口：/api/position/publish
+	请求方式：POST
+	请求参数：
+		name - 职位名称
+		company - 公司名称
+		address - 工作地点
+		salary - 薪资
+		logo - 公司LOGO图片
+	返回JSON：
+		{
+			"res_code" : 1, // 1表示发布成功，否则失败
+			"res_error" : "", // 失败时的错误信息
+			"res_body" : { // 响应主体
+				"data" : {
+					"_id" : " - 主键值",
+					"name" : " - 职位名称",
+					"company" : " - 公司名称",
+					"address" : " - 工作地点",
+					"salary" : " - 薪资",
+					"logo" : " - 公司LOGO图片"
+					"publish_time" : " - 发布时间"
+				}
+			}
+		}
+
+修改职位：
+	接口：/api/position/update
+	请求方式：POST
+	请求参数：
+		_id - 待修改职位的主键值
+		name - 职位名称
+		company - 公司名称
+		address - 工作地点
+		salary - 薪资
+		logo - 公司LOGO图片
+	返回JSON：
+		{
+			"res_code" : 1, // 1表示修改成功，否则失败
+			"res_error" : "", // 失败时的错误信息
+			"res_body" : { // 响应主体
+				"data" : {
+					"_id" : " - 主键值",
+					"name" : " - 职位名称",
+					"company" : " - 公司名称",
+					"address" : " - 工作地点",
+					"salary" : " - 薪资",
+					"logo" : " - 公司LOGO图片"
+					"publish_time" : " - 发布时间"
+				}
+			}
+		}
+
+删除职位：
+	接口：/api/position/delete
+	请求方式：GET
+	请求参数：
+		_id - 待删除职位的主键值
+	返回JSON：
+		{
+			"res_code" : 1, // 1表示修改成功，否则失败
+			"res_error" : "", // 失败时的错误信息
+			"res_body" : { // 响应主体
+				"status" : true // 删除成功/失败
+			}
+		}
+
+查询职位：
+	接口：/api/position/find
+	请求方式：GET
+	请求参数：
+		page - 待查询的页码
+	返回JSON：
+		{
+			"res_code" : 1, // 1表示查询成功，否则失败
+			"res_error" : "", // 失败时的错误信息
+			"res_body" : { // 响应主体
+				"data" : [
+					{
+						"_id" : " - 主键值",
+						"name" : " - 职位名称",
+						"company" : " - 公司名称",
+						"address" : " - 工作地点",
+						"salary" : " - 薪资",
+						"logo" : " - 公司LOGO图片"
+						"publish_time" : " - 发布时间"
+					},
+					{
+						"_id" : " - 主键值",
+						"name" : " - 职位名称",
+						"company" : " - 公司名称",
+						"address" : " - 工作地点",
+						"salary" : " - 薪资",
+						"logo" : " - 公司LOGO图片"
+						"publish_time" : " - 发布时间"
+					},...
+				]
+			}
+		}
