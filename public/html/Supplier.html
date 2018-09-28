@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<title>供应商管理</title>
+		<style type="text/css">
+			.form-group{margin-left: 30px;}
+			th{text-align: center !important;}
+		</style>
+		<link rel="stylesheet" href="/lib/bootstrap/css/bootstrap.min.css">
+	</head>
+	<body>
+				
+		<div class="header"></div>
+		
+		<div class="time"></div>
+		
+		<div class="action"></div>
+		
+		<div class="content">
+			<div class="content-header" style="height: 30px;line-height: 30px;">
+				<img src="../images/static/home.png" style="margin-right: 5px;"/>您现在的位置是:<span style="color: #00B7FF;">供应商管理页面</span>
+			</div>
+			<div class="form" style="height: 50px;vertical-align:middle;border: 1px solid #C0C0C0;">
+				<form class="form-inline" style="margin-top: 7px;">
+				  <div class="form-group">
+				    供应商名称：<input type="text" class="form-control" name="suppliername" id="suppliername" placeholder="请输入供应商名称">
+				  </div>
+				  <button type="submit" class="btn btn-default btn-success"><img src="../images/static/search.png" alt="" />查询</button>
+				  <a class="btn btn-primary" style="float: right;margin-right: 50px;" data-toggle="modal" data-target="#suppliermodal">添加供应商</a>	
+				</form>
+			</div>	
+			
+			<div class="table-responsive">
+			  <table class="table table-bordered text-center">
+			    <thead>
+			    	<tr>
+			    		<th>账单编号</th>
+			    		<th>商品名称</th>
+			    		<th>商品单位</th>
+			    		<th>供应商</th>
+			    		<th>数量</th>
+			    		<th>账单金额</th>
+			    		<th>是否支付</th>
+			    		<th>创建时间</th>
+			    		<th>操作</th>
+			    	</tr>
+			    </thead>
+			    <tbody>
+			    	<tr>
+			    		<td>1</td>
+			    		<td>2</td>
+			    		<td>3</td>
+			    		<td>3</td>
+			    		<td>4</td>
+			    		<td>2</td>
+			    		<td>2</td>
+			    		<td>2</td>
+			    		<td>
+			    			<a href=""><img src="../images/static/read.png"/></a>
+			    			<a href=""><img src="../images/static/xiugai.png"/></a>
+			    			<a href=""><img src="../images/static/delete.png"/></a>
+			    		</td>
+			    	</tr>
+			    </tbody>
+			  </table>
+			</div>
+		</div>
+		
+		<div class="modal fade" id="suppliermodal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel">
+		  <div class="modal-dialog" role="document">
+		    <div class="modal-content">
+		      <div class="modal-header">
+		        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+		        <h4 class="modal-title" id="gridSystemModalLabel">添加供应商</h4>
+		      </div>
+		      <div class="modal-body">
+		        <form>
+		          <div class="form-group">
+		            <label for="suppliercode" class="control-label">供应商编码</label>
+		            <input type="text" name="suppliercode" class="form-control" id="suppliercode" placeholder="请输入供应商编码">
+		          </div>
+		          <div class="form-group">
+		            <label for="suppliername" class="control-label">供应商名称</label>
+		            <input class="form-control" name="suppliername" id="suppliername" placeholder="请输入供应商名称"></input>
+		          </div>
+		          <div class="form-group">
+		            <label for="linkman" class="control-label">联系人</label>
+		            <input class="form-control" name="linkman" id="linkman" placeholder="请输入联系人名称"></input>
+		          </div>
+		          <div class="form-group">
+		            <label for="linkphone" class="control-label">联系电话</label>
+		            <input class="form-control" name="linkphone" id="linkphone" placeholder="请输入联系人电话"></input>
+		          </div>
+		          <div class="form-group">
+		            <label for="linkaddress" class="control-label">联系地址</label>
+		            <input class="form-control" name="linkaddress" id="linkaddress" placeholder="请输入联系人地址"></input>
+		          </div>
+		          <div class="form-group">
+		            <label for="supplierfax" class="control-label">传真</label>
+		            <input class="form-control" name="supplierfax" id="supplierfax" placeholder="请输入传真号"></input>
+		          </div>
+		          <div class="form-group">
+		            <label for="suppliertime" class="control-label">时间</label>
+		            <input class="form-control" name="suppliertime" id="suppliertime"></input>
+		          </div>
+		        </form>
+		      </div>
+		      <div class="modal-footer">
+		        <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+		        <button type="button" class="btn btn-primary">添加</button>
+		      </div>
+		    </div>
+		  </div>
+		</div>
+		
+		
+		<script src="/lib/jquery/jquery-1.12.4.min.js" type="text/javascript" charset="utf-8"></script>
+		<script src="/lib/bootstrap/js/bootstrap.min.js" type="text/javascript" charset="utf-8"></script>
+	</body>
+</html>
