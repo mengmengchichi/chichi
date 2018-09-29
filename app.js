@@ -8,7 +8,8 @@ var session = require('express-session');
 //引入路由文件
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
-
+var billRouter = require('./routes/billrouter');
+var supplierRouter = require('./routes/supplierrouter');
 //创建应用
 var app = express();
 
@@ -52,8 +53,8 @@ app.use(express.static(path.join(__dirname, 'public')));
 //设置路由中间件
 app.use('/', indexRouter);
 app.use('/api/user', usersRouter);//访问、api/user目录资源
-
-
+app.use('/api/bill',billRouter);
+app.use('/api/supplier',supplierRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

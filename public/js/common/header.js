@@ -1,6 +1,7 @@
 function Header(){
 	this.createDom();
 	this.addListener();
+	this.loadUser();
 }
 
 Header.template = `<nav class="navbar" style="background-color: #337AB7;">
@@ -24,8 +25,8 @@ Header.template = `<nav class="navbar" style="background-color: #337AB7;">
 		        <li data-toggle="modal" data-target="#regModal" style="margin-right:10px;margin-top: 8px;"><button type="button" class="btn btn-primary btn-success registBtn">注册</button></li>
 		      </ul>
 		      <ul class="nav navbar-nav navbar-right hidden welcome-logout-link">
-		        <li><a href="#" style="color: white;">欢迎：</a></li>
-		        <li><a href="javascript:void(0)" class="logout-link" style="color: white;">退出</a></li>
+		        <li><a href="#" style="color: white;"></a></li>
+		        <li data-toggle="modal" data-target="#regModal" style="margin-right:10px;margin-top: 8px;"><button type="button" class="btn btn-primary btn-success registBtn">退出</button></li>
 		      </ul>
 		    </div><!-- /.navbar-collapse -->
 		  </div><!-- /.container-fluid -->
@@ -45,7 +46,7 @@ $.extend(Header.prototype,{
 			return;
 		
 		user = JSON.parse(user);
-		$(".reg-login-link").hide().next('.welcome-logout-link').removeClass('hidden').find('a:first').text("欢迎:" + user.username);
+		$(".reg-login-link").hide().next('.welcome-logout-link').removeClass('hidden').find('a:first').text("你好:" + user.username);
 	},
 	//注册按钮事件
 	addListener(){
