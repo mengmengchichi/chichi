@@ -9,5 +9,7 @@ router.get('/', function(req, res, next) {
 
 router.get('/insert',supplierservice.insert);
 
+router.get('/load',supplierservice.find);
+
 
 module.exports = router;

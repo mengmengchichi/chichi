@@ -8,7 +8,17 @@ const UserDao = {
 	},
 	//登录查询信息
 	find(condition){
-		return User.find(condition);
+		return User.find(condition);	
+	},
+	
+	
+	load(condition){
+		if(condition.act === 'load'){
+			return User.find().limit(parseInt(condition.count)).skip((condition.page - 1)*condition.count);
+		}else if(condition.act === 'pagination'){
+			
+			return User.countDocuments();
+		}
 	},
 	//修改信息
 	update(changeinfo){

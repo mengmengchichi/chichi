@@ -11,5 +11,10 @@ router.get('/insert',Billservice.insert);
 
 router.get('/load',Billservice.find);
 
+router.get('/update',Billservice.update);
+
+router.get('/remove',Billservice.remove);
+
+router.get('/select',Billservice.selectBill);
 
 module.exports = router;

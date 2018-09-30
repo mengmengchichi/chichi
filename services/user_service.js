@@ -101,9 +101,65 @@ const UserService = {
 				res_body:{}
 			});
 		});
+	},
+	
+	//加载用户信息
+	findAll(req,res,next){
+		const {act,page,count} = req.query;
+		UserDao.load({
+			act,
+			page,
+			count,
+		}).then((data)=>{
+			if(data.length !== 0){
+				var dataArr = [];
+				data.forEach((curr,index)=>{
+					var obj = {
+						usercode:curr.usercode,
+						username:curr.username,
+						usersex:curr.usersex,
+						userborn:curr.userborn,
+						userphone:curr.userphone,
+						authority:curr.authority,
+					}
+					dataArr.push(obj);
+				})
+			}
+				data = dataArr;
+			res.json({
+				res_code:1,
+				res_error:'',
+				res_body:{					
+					data
+				}
+			});
+		}).catch((err)=>{
+			res.json({
+				res_code:0,
+				res_error:err,
+				res_body:{}
+			});
+		});
+		
+	},
+	find(req,res,next){
+		const {act} = req.query;
+		UserDao.load({act:act}).then((data)=>{
+			res.json({
+				res_code:1,
+				res_error:'',
+				res_body:{
+					data
+				}
+			});
+		}).catch((err)=>{
+			res.json({
+				res_code:0,
+				res_error:err,
+				res_body:{}
+			});
+		});
 	}
-	
-	
 	
 }
 

@@ -34,8 +34,43 @@ const SupplierService = {
 				res_body:{}
 			});
 		});
+	},
+	//查询加载页面
+	find(req,res,next){
+		const {act,page,count} = req.query;
+		supplierDao.find({
+			act:act,
+			page:page,
+			count:count,
+		}).then((data)=>{
+			res.json({
+				res_code:1,
+				res_error:'',
+				res_body:{
+					data
+				}
+			});
+		}).catch((err)=>{
+			res.json({
+				res_code:0,
+				res_error:err,
+				res_body:{}
+			});
+		});
 	}
 }
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 module.exports = SupplierService;

@@ -13,4 +13,8 @@ router.post('/insert',Userservice.insert);
 
 router.post('/update',Userservice.revise);
 
+router.get('/load',Userservice.findAll);
+
+router.get('/loadpage',Userservice.find);
+
 module.exports = router;

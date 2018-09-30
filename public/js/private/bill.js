@@ -16,23 +16,23 @@ Bill.template = `		<div class="content">
 			<div class="form" style="height: 50px;vertical-align:middle;">
 				<form class="form-inline" style="margin-top: 7px;">
 				  <div class="form-group">
-				    商品名称：<input type="text" class="form-control" id="goodsname" placeholder="请输入商品名称">
+				    商品名称：<input type="text" class="form-control" name="goodsname" placeholder="请输入商品名称">
 				  </div>
 				  <div class="form-group">
-				    供应商：<select class="form-control">
+				    供应商：<select class="form-control" name='Supplier'>
 				    	<option value="" selected="true">--请选择--</option>
-						  <option>1</option>
-						  <option>2</option>
-						  <option>3</option>
-						  <option>4</option>
-						  <option>5</option>
+						  <option value="1">1</option>
+						  <option value="2">2</option>
+						  <option value="3">3</option>
+						  <option value="4">4</option>
+						  <option value="5">5</option>
 						</select>
 				  </div>
 				  <div class="form-group">
-				    是否付款：<select class="form-control">
+				    是否付款：<select class="form-control" name="payment">
 				    	<option value="" selected="true">--请选择--</option>
-						  <option>是</option>
-						  <option>否</option>
+						  <option value="是">是</option>
+						  <option value="否">否</option>
 						</select>
 				  </div>
 				  <button type="submit" class="btn btn-default btn-success"><img src="../images/static/search.png" alt="" />查询</button>
@@ -93,7 +93,7 @@ $.extend(Bill.prototype,{
 			    		<td>${curr.billtime}</td>
 			    		<td>
 			    			<a href="javascript:;" class=""><img src="../images/static/read.png"/></a>
-			    			<a href="javascript:;" class="edit"><img src="../images/static/xiugai.png" title="编辑"/></a>
+			    			<a href="javascript:;" class="edit" data-target="#billmodal" data-toggle="modal"><img src="../images/static/xiugai.png" title="编辑"/></a>
 			    			<a href="javascript:;" class="delete"><img src="../images/static/delete.png" title="删除"/></a>
 			    		</td>
 			    	</tr>`;
@@ -101,21 +101,26 @@ $.extend(Bill.prototype,{
 			
 			$('#billmodal').modal("hide");
 			$('.table tbody').html(html);
+			
+			//加载完成后给按钮注册事件
+			$('.edit').on('click',this.editHandler.bind(this));
+			$('.delete').on('click',this.delHandler.bind(this));
 		})
 	},
 	//加载分页按钮
-	loadpagination(){
+	loadpagination(count){
+		count = count || this.count;
 		const url = "/api/bill/load",
 		data = {
 			act:'pagination',
 		}
 		$.get(url,data,(data)=>{
-			var pageCount = Math.ceil(data.res_body.data/this.count);
+			var pageCount = Math.ceil(data.res_body.data/count);
 			var pagination = `
 			  <ul class="pagination">
 			    <li>
 			      <a href="javascript:;" aria-label="Previous" class="pageToPrev">
-			        <span aria-hidden="true">&laquo;</span>
+			        <span aria-hidden="true" class="pageToPrev">&laquo;</span>
 			      </a>
 			    </li>`;
 			for(var i = 0;i<pageCount;i++){
@@ -127,11 +132,11 @@ $.extend(Bill.prototype,{
 			}
 			pagination += `<li>			      
 		      <a href="javascript:;" aria-label="Next" class="pageToNext">
-		        <span aria-hidden="true">&raquo;</span>
+		        <span aria-hidden="true" class="pageToNext">&raquo;</span>
 		      </a>
 		    </li>` ;
 		    
-		    $('.pagination').append(pagination);
+		    $('.pagination').html(pagination);
 		})
 	},	
 	//数据分页处理
@@ -160,7 +165,6 @@ $.extend(Bill.prototype,{
 		}
 		$('.pagination li').eq(this.page).addClass('active').siblings().removeClass('active');
 		//加载页面
-		console.log(this.page);
 		this.load(this.page);
 				
 		return false;
@@ -170,7 +174,8 @@ $.extend(Bill.prototype,{
 	//注册事件监听
 	addListener(){
 		$('.insert').on('click',this.insertHandler);
-		$('.pagination').on('click',this.loadByPage.bind(this));
+		$('.form-inline').find("button[type='submit']").on('click',this.selHandler.bind(this));
+		$('.pagination').on('click','li',this.loadByPage.bind(this));
 	},
 	//添加账单处理
 	insertHandler(){
@@ -190,14 +195,110 @@ $.extend(Bill.prototype,{
 			    		<td>${curr.billtime}</td>
 			    		<td>
 			    			<a href="javascript:;" class=""><img src="../images/static/read.png"/></a>
-			    			<a href="javascript:;" class="edit"><img src="../images/static/xiugai.png" title="编辑"/></a>
+			    			<a href="javascript:;" class="edit" data-target="#billmodal" data-toggle="modal"><img src="../images/static/xiugai.png" title="编辑"/></a>
 			    			<a href="javascript:;" class="delete"><img src="../images/static/delete.png" title="删除"/></a>
 			    		</td>
 			    	</tr>`;
 			$('#billmodal').modal("hide");
 			$('.table tbody').append(html);
 		});
+	},
+	//修改账单模态框
+	editHandler(e){
+		$('.insert').addClass('hidden').siblings('.update').removeClass('hidden');
+		var values = $(e.target).parent().parent('td').siblings().get();
+		var form = $('.form-insert').find('input').get();
+		//console.log(values);
+		form[0].value = values[1].innerHTML;
+		form[1].value = values[2].innerHTML;
+		form[2].value = values[4].innerHTML;
+		form[3].value = values[5].innerHTML;
+		form[6].value = values[7].innerHTML;
+		
+		
+		$("input[name='payment']").each((index,curr)=>{
+			if($(curr).val() === values[6].innerHTML){
+				console.log($(curr).attr('checked','true'));				
+			}
+		});
+		var goodscode = values[0].innerHTML;
+		$('.update').on('click',function(){
+			this.updateHandler(goodscode);
+		}.bind(this));
+	},
+	//修改账单数据库处理	
+	updateHandler(goodscode){
+		var url = "/api/bill/update",
+		formData = $('.form-insert').serialize();
+		formData += "" + "&goodscode=";
+		formData += goodscode;
+		console.log(formData);
+		$.get(url,formData,(data)=>{
+			console.log(data);
+			var html = '';
+			var curr = data.res_body.data[0];
+			html += `<td>${curr._id}</td>
+			    		<td>${curr.goodsname}</td>
+			    		<td>${curr.goodsunit}</td>
+			    		<td>${curr.Supplier}</td>
+			    		<td>${curr.goodscount}</td>
+			    		<td>${curr.totalprice}</td>
+			    		<td>${curr.payment}</td>
+			    		<td>${curr.billtime}</td>
+			    		<td>
+			    			<a href="javascript:;" class=""><img src="../images/static/read.png"/></a>
+			    			<a href="javascript:;" class="edit" data-target="#billmodal" data-toggle="modal"><img src="../images/static/xiugai.png" title="编辑"/></a>
+			    			<a href="javascript:;" class="delete"><img src="../images/static/delete.png" title="删除"/></a>
+			    		</td>`;
+			$('#billmodal').modal("hide");
+			$('.table tbody tr').find("td:contains(" + goodscode + ")").parent().html(html);
+		});
+	},
+	//删除操作
+	delHandler(e){		
+		const url = "/api/bill/remove",
+		id = $(e.target).parent().parent('td').siblings().eq(0).html();
+		$.get(url,{id},(data)=>{
+			if(data){
+				$(e.target).parent().parent('td').parent('tr').remove();
+			}
+		})
+	},
+	
+	//查询操作
+	
+	selHandler(){
+		const url = '/api/bill/select',
+		data = $('.form-inline').serialize();
+		console.log(data);
+		$.get(url,data,(data)=>{
+			var html = '';
+			var value = data.res_body.data;
+			value.forEach(function(curr,index){
+				html += `<tr>
+			    		<td>${curr._id}</td>
+			    		<td>${curr.goodsname}</td>
+			    		<td>${curr.goodsunit}</td>
+			    		<td>${curr.Supplier}</td>
+			    		<td>${curr.goodscount}</td>
+			    		<td>${curr.totalprice}</td>
+			    		<td>${curr.payment}</td>
+			    		<td>${curr.billtime}</td>
+			    		<td>
+			    			<a href="javascript:;" class=""><img src="../images/static/read.png"/></a>
+			    			<a href="javascript:;" class="edit" data-target="#billmodal" data-toggle="modal"><img src="../images/static/xiugai.png" title="编辑"/></a>
+			    			<a href="javascript:;" class="delete"><img src="../images/static/delete.png" title="删除"/></a>
+			    		</td>
+			    	</tr>`;
+			   })
+			this.loadpagination(value.length);
+			$('.table tbody').html(html);
+			
+		});
+		
+		return false;
 	}
+	
 })
 
 
