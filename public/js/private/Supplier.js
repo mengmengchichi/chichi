@@ -52,7 +52,10 @@ $.extend(Supplier.prototype,{
 	//注册事件监听
 	addListener(){
 		//添加事件
-		$('.supplierinsert').on('click',this.insertHandler);		
+		$('.supplierinsert').on('click',this.insertHandler);	
+		//查询事件
+		$('.form-inline').find("button[type='submit']").on('click',this.selHandler.bind(this));
+		//分页实现
 		$('.pagination').on('click','li',this.loadByPage.bind(this));
 	},
 	insertHandler(){
@@ -104,14 +107,19 @@ $.extend(Supplier.prototype,{
 	    		<td>${curr.suppliertime}</td>
 	    		<td>
 			    			<a href="javascript:;" class=""><img src="../images/static/read.png"/></a>
-			    			<a href="javascript:;" class="edit"><img src="../images/static/xiugai.png" title="编辑"/></a>
+			    			<a href="javascript:;" class="edit" data-target="#suppliermodal" data-toggle="modal"><img src="../images/static/xiugai.png" title="编辑"/></a>
 			    			<a href="javascript:;" class="delete"><img src="../images/static/delete.png" title="删除"/></a>
 	    		</td>
 	    	</tr>`;	    	
 	    	$('#suppliermodal').modal('hide');
 	    	$('.table tbody').html(html);
-			})
-		})
+			});
+			
+			//加载完成后给按钮注册事件
+			$('.edit').on('click',this.editHandler.bind(this));
+			$('.delete').on('click',this.delHandler.bind(this));
+		});
+		
 	},
 	//加载分页按钮
 	loadpagination(){
@@ -176,7 +184,98 @@ $.extend(Supplier.prototype,{
 		this.load(this.page);
 				
 		return false;
+	},
+	
+	//修改账单模态框
+	editHandler(e){
+		$('.supplierinsert').addClass('hidden').siblings('.update').removeClass('hidden');
+		var values = $(e.target).parent().parent('td').siblings().get();		
+		var form = $('.supplier-form').find('input').get();
+		//console.log(form);
+		form[0].value = values[0].innerHTML;
+		form[1].value = values[1].innerHTML;
+		form[2].value = values[2].innerHTML;
+		form[3].value = values[3].innerHTML;
+		form[4].value = values[4].innerHTML;
+		form[5].value = values[5].innerHTML;		
+		form[6].value = values[6].innerHTML;
+
+
+		$('.update').on('click',function(){
+			 this.updateHandler($(e.target).parent().parent('td').parent('tr'));
+		}.bind(this));
+	},
+	//修改账单数据库处理	
+	updateHandler(target){
+		var url = "/api/supplier/update",
+		formData = $('.supplier-form').serialize();
+		//console.log(formData);
+		$.get(url,formData,(data)=>{
+			//console.log(data);
+			var html = '';
+			var curr = data.res_body.data[0];
+			html += `<td>${curr.suppliercode}</td>
+	    		<td>${curr.suppliername}</td>
+	    		<td>${curr.linkman}</td>
+	    		<td>${curr.linkphone}</td>
+	    		<td>${curr.linkaddress}</td>
+	    		<td>${curr.supplierfax}</td>
+	    		<td>${curr.suppliertime}</td>
+	    		<td>
+			    			<a href="javascript:;" class=""><img src="../images/static/read.png"/></a>
+			    			<a href="javascript:;" class="edit" data-target="#suppliermodal" data-toggle="modal"><img src="../images/static/xiugai.png" title="编辑"/></a>
+			    			<a href="javascript:;" class="delete"><img src="../images/static/delete.png" title="删除"/></a>
+	    		</td>`;
+			$('#suppliermodal').modal("hide");
+			$('.insert').removeClass('hidden').siblings('.update').addClass('hidden');
+			target.html(html);
+		});
+	},
+	//删除操作
+	delHandler(e){		
+		const url = "/api/supplier/remove",
+		id = $(e.target).parent().parent('td').siblings().eq(6).html();
+		$.get(url,{id},(data)=>{
+			if(data.res_code){
+				$(e.target).parent().parent('td').parent('tr').remove();
+			}
+		})
+	},
+	
+	//查询操作
+	
+	selHandler(){
+		const url = '/api/supplier/select',
+		data = $('.form-inline').serialize();
+		console.log(data);
+		$.get(url,data,(data)=>{
+			var html = '';
+			var value = data.res_body.data;
+			value.forEach(function(curr,index){
+				html += `<tr>
+			    		<td>${curr._id}</td>
+			    		<td>${curr.goodsname}</td>
+			    		<td>${curr.goodsunit}</td>
+			    		<td>${curr.Supplier}</td>
+			    		<td>${curr.goodscount}</td>
+			    		<td>${curr.totalprice}</td>
+			    		<td>${curr.payment}</td>
+			    		<td>${curr.billtime}</td>
+			    		<td>
+			    			<a href="javascript:;" class=""><img src="../images/static/read.png"/></a>
+			    			<a href="javascript:;" class="edit" data-target="#billmodal" data-toggle="modal"><img src="../images/static/xiugai.png" title="编辑"/></a>
+			    			<a href="javascript:;" class="delete"><img src="../images/static/delete.png" title="删除"/></a>
+			    		</td>
+			    	</tr>`;
+			   })
+			this.loadpagination(value.length);
+			$('.table tbody').html(html);
+			
+		});
+		
+		return false;
 	}
+	
 })
 
 

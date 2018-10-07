@@ -11,5 +11,10 @@ router.get('/insert',supplierservice.insert);
 
 router.get('/load',supplierservice.find);
 
+router.get('/update',supplierservice.update);
+
+router.get('/remove',supplierservice.remove);
+
+router.get('/select',supplierservice.selectSupplier);
 
 module.exports = router;

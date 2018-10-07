@@ -43,7 +43,9 @@ $.extend(Action.prototype,{
 			$('.login-out-link').eq(1).html("欢迎来到超市账单管理系统");
 			
 			//用户登录后可以到达修改密码界面
-			$('.pwdchange').on('click',window.location.href = "/html/password.html");
+			$('.pwdchange').on('click',function(){
+				$(this).attr('href',"/html/password.html");
+			});
 		}
 	},	
 })

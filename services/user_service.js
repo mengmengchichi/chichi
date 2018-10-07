@@ -130,7 +130,7 @@ const UserService = {
 				res_code:1,
 				res_error:'',
 				res_body:{					
-					data
+					data:data
 				}
 			});
 		}).catch((err)=>{

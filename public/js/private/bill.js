@@ -173,8 +173,11 @@ $.extend(Bill.prototype,{
 	
 	//注册事件监听
 	addListener(){
+		//账单添加
 		$('.insert').on('click',this.insertHandler);
+		//账单查询
 		$('.form-inline').find("button[type='submit']").on('click',this.selHandler.bind(this));
+		//分页处理
 		$('.pagination').on('click','li',this.loadByPage.bind(this));
 	},
 	//添加账单处理
@@ -251,6 +254,7 @@ $.extend(Bill.prototype,{
 			    			<a href="javascript:;" class="delete"><img src="../images/static/delete.png" title="删除"/></a>
 			    		</td>`;
 			$('#billmodal').modal("hide");
+			$('.insert').removeClass('hidden').siblings('.update').addClass('hidden');
 			$('.table tbody tr').find("td:contains(" + goodscode + ")").parent().html(html);
 		});
 	},
